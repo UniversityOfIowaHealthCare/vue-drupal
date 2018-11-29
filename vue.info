@@ -1,0 +1,7 @@
+name = Vue
+description = Adds Vue.js to your site.
+core = 7.x
+package = User Interface
+
+configure = admin/config/modules/vue
+

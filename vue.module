@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * Implements hook_help().
+ */
+function vue_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#vue':
+      return t('Enable to allow any custom or contrib modules to utilize Vue.js.');
+    }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function vue_permission() {
+  return array(
+    'administer vue module' => array(
+      'title' => t('Administer Vue module'),
+      'description' => t('Perform administration tasks for the Vue module.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function vue_menu() {
+  return[
+    'admin/config/development/vue' => [
+      'title' => 'Vue',
+      'description' => 'Configuration for Vue module',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => ['vue_form'],
+      'access arguments' => ['administer vue module'],
+      'type' => MENU_NORMAL_ITEM,
+    ]
+  ];
+}
+
+/**
+ * Page callback: Vue module settings
+ *
+ * @see vue_menu()
+ */
+function vue_form($form, &$form_state) {
+  $form['version'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Version settings'),
+    '#description' => t('Manage the Vue version by providing its CDN url. This url can be found on the Vue website'
+      . ' under the <a href="https://vuejs.org/v2/guide/installation.html#CDN">Installation</a> section.<br><br><b>Prod'
+      . ' and Dev versions should be kept in sync unless you\'re experimenting.</b>'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['version']['vue_prod_url'] = [
+    '#type' => 'textfield',
+    '#title' => t('Prod URL'),
+    '#default_value' => variable_get('vue_prod_url', 'https://cdn.jsdelivr.net/npm/vue@2.5.17'),
+    '#description' => t('The production URL used to import Vue.js into the sites.'),
+    '#required' => TRUE,
+  ];
+
+  $form['version']['vue_dev_url'] = [
+    '#type' => 'textfield',
+    '#title' => t('Dev URL'),
+    '#default_value' => variable_get('vue_dev_url', 'https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js'),
+    '#description' => t('The production URL used to import Vue.js into the sites.'),
+    '#required' => TRUE,
+  ];
+
+  $form['vue_mode'] = array(
+    '#type' => 'select',
+    '#title' => t('Vue Mode'),
+    '#options' => [
+      0 => t('Production'),
+      1 => t('Development (caution)'),
+    ],
+    '#description' => t('The mode in which to run Vue.<h3><b>DO NOT USE \'<i>Development</i>\' MODE IN A PRODUCTION ENVIRONMENT.</b></h3>'),
+    '#default_value' => variable_get('vue_mode', 0),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_page_build().
+ */
+function vue_page_build(&$page) {
+  $mode = variable_get('vue_mode');
+  $vue_url = $mode == 0 ? variable_get('vue_prod_url') : variable_get('vue_dev_url');
+
+  drupal_add_js($vue_url);
+}
