@@ -1,5 +1,7 @@
 # Vue
-Add Vue.js to your website via CDN.
+Add Vue.js to your Drupal website instantly.
+
+Works by using a CDN url (which you can change).
 
 > No composer? No npm? No problem!
 
