@@ -1,5 +1,5 @@
 name = Vue
-description = Adds Vue.js to your site.
+description = Adds Vue.js to your site via CDN.
 core = 7.x
 package = User Interface
 
