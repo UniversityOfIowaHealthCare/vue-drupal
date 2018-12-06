@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * Implements hook_install().
+ */
+function vue_cdn_install() {
+    variable_set('vue_prod_url', 'https://cdn.jsdelivr.net/npm/vue@2.5.17');
+    variable_set('vue_dev_url', 'https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js');
+}
+
+/**
  * Implements hook_help().
  */
 function vue_cdn_help($path, $arg) {
@@ -57,7 +65,7 @@ function vue_cdn_form($form, &$form_state) {
   $form['version']['vue_prod_url'] = [
     '#type' => 'textfield',
     '#title' => t('Prod URL'),
-    '#default_value' => variable_get('vue_prod_url', 'https://cdn.jsdelivr.net/npm/vue@2.5.17'),
+    '#default_value' => variable_get('vue_prod_url'),
     '#description' => t('The production URL used to import Vue.js into the sites.'),
     '#required' => TRUE,
   ];
@@ -65,7 +73,7 @@ function vue_cdn_form($form, &$form_state) {
   $form['version']['vue_dev_url'] = [
     '#type' => 'textfield',
     '#title' => t('Dev URL'),
-    '#default_value' => variable_get('vue_dev_url', 'https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js'),
+    '#default_value' => variable_get('vue_dev_url'),
     '#description' => t('The production URL used to import Vue.js into the sites.'),
     '#required' => TRUE,
   ];
