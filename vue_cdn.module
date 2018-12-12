@@ -35,7 +35,7 @@ function vue_cdn_permission() {
  */
 function vue_cdn_menu() {
   return[
-    'admin/config/development/vue' => [
+    'admin/config/modules/vue' => [
       'title' => 'Vue',
       'description' => 'Configuration for Vue module',
       'page callback' => 'drupal_get_form',
